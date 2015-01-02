@@ -20,17 +20,18 @@ namespace Youtube_picture_downloader
             WebClient dlClient = new WebClient();
             byte[] image;
             string ytUrl;
+            string vidId = GetVideoID(textBox1.Text);
 
-            lblStatus.Text = "Getting preview...";
+            lblStatus.Text = "Getting preview..."; Refresh();
             try
             {
-                image = dlClient.DownloadData("http://i.ytimg.com/vi/" + GetVideoID(textBox1.Text) + "/maxresdefault.jpg");
-                ytUrl = "http://i.ytimg.com/vi/" + GetVideoID(textBox1.Text) + "/maxresdefault.jpg";
+                image = dlClient.DownloadData("http://i.ytimg.com/vi/" + vidId + "/maxresdefault.jpg");
+                ytUrl = "http://i.ytimg.com/vi/" + vidId + "/maxresdefault.jpg";
             }
             catch (WebException webE)
             {
-                image = dlClient.DownloadData("http://i.ytimg.com/vi/" + GetVideoID(textBox1.Text) + "/hqdefault.jpg");
-                ytUrl = "http://i.ytimg.com/vi/" + GetVideoID(textBox1.Text) + "/hqdefault.jpg";
+                image = dlClient.DownloadData("http://i.ytimg.com/vi/" + vidId + "/hqdefault.jpg");
+                ytUrl = "http://i.ytimg.com/vi/" + vidId + "/hqdefault.jpg";
             }
 
             MemoryStream mem = new MemoryStream(image);
@@ -52,7 +53,7 @@ namespace Youtube_picture_downloader
                     sfd.AddExtension = true;
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
-                        lblStatus.Text = "Downloading image...";
+                        lblStatus.Text = "Downloading image..."; Refresh();
                         dlClient.DownloadFile(ytUrl, sfd.FileName);
 
                         MessageBox.Show("Done!", "Yay", MessageBoxButtons.OK, MessageBoxIcon.Information);

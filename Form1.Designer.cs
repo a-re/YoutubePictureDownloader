@@ -38,6 +38,9 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.lblSize = new System.Windows.Forms.Label();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.colStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colVidName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -74,7 +77,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 167);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 291);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(393, 22);
             this.statusStrip1.TabIndex = 3;
@@ -91,7 +94,7 @@
             this.groupBox1.Controls.Add(this.lblSize);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.pictureBox1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 32);
+            this.groupBox1.Location = new System.Drawing.Point(9, 157);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(369, 131);
             this.groupBox1.TabIndex = 5;
@@ -127,11 +130,35 @@
             this.lblSize.Size = new System.Drawing.Size(0, 20);
             this.lblSize.TabIndex = 7;
             // 
+            // listView1
+            // 
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colStatus,
+            this.colVidName});
+            this.listView1.GridLines = true;
+            this.listView1.Location = new System.Drawing.Point(9, 32);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(378, 119);
+            this.listView1.TabIndex = 8;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            // 
+            // colStatus
+            // 
+            this.colStatus.Text = "Status";
+            this.colStatus.Width = 46;
+            // 
+            // colVidName
+            // 
+            this.colVidName.Text = "Video";
+            this.colVidName.Width = 322;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(393, 189);
+            this.ClientSize = new System.Drawing.Size(393, 313);
+            this.Controls.Add(this.listView1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.button1);
@@ -162,6 +189,9 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lblSize;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ColumnHeader colStatus;
+        private System.Windows.Forms.ColumnHeader colVidName;
     }
 }
 
