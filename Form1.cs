@@ -7,10 +7,6 @@ using System.Net;
 using System.IO;
 namespace Youtube_picture_downloader
 {
-    //image = dlClient.DownloadData("http://i.ytimg.com/vi/" + vidId + "/maxresdefault.jpg");
-    //ytUrl = "http://i.ytimg.com/vi/" + vidId + "/maxresdefault.jpg";
-    //image = dlClient.DownloadData("http://i.ytimg.com/vi/" + vidId + "/hqdefault.jpg");
-    //ytUrl = "http://i.ytimg.com/vi/" + vidId + "/hqdefault.jpg";
     public partial class Form1 : Form
     {
         public Form1()
@@ -22,8 +18,8 @@ namespace Youtube_picture_downloader
         {
             /* Download THE BYTES (don't store a local file) of the picture */
             WebClient dlClient = new WebClient();
-            byte[] image = null;
-            string ytUrl = "";
+            Uri ytURI = null;
+            byte[] image = null;     
             string vidId = GetVideoID(textBox1.Text);
 
             lblStatus.Text = "Getting preview..."; Refresh();
@@ -34,10 +30,11 @@ namespace Youtube_picture_downloader
             {
                 try
                 {
-                    response = (HttpWebResponse)request.GetResponse();
+                    response = (HttpWebResponse)request.GetResponse(); /* If the response is anything other than 200 OK, throw a WebException */
 
                     image = dlClient.DownloadData(request.RequestUri);
-                    ytUrl = request.RequestUri.AbsoluteUri;
+                    ytURI = request.RequestUri;
+                    break; /* This break means that the foreach won't continue on to the next request if the current one is working */
                 }
                 catch (WebException ex)
                 { /* Do nothing and continue to the next request */ }
@@ -45,7 +42,7 @@ namespace Youtube_picture_downloader
                 {
                     if (response != null)
                     {
-                        response.Close();
+                        response.Close(); /* To avoid memory leaks :P */
                     }
                 }
             }
@@ -69,7 +66,7 @@ namespace Youtube_picture_downloader
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
                         lblStatus.Text = "Downloading image..."; Refresh();
-                        dlClient.DownloadFile(ytUrl, sfd.FileName);
+                        dlClient.DownloadFile(ytURI.AbsoluteUri, sfd.FileName);
 
                         MessageBox.Show("Done!", "Yay", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         lblStatus.Text = "Done!";
@@ -85,7 +82,6 @@ namespace Youtube_picture_downloader
 
         private bool IsValidYtURL(string url)
         {
-            /* I might not need the OR "http" since I think all YT links are now https */
             return url.StartsWith("https://www.youtube.com/watch?v=") && GetVideoID(url).Length == 11;
         }
 
