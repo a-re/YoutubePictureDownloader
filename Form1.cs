@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Text;
 using System.Windows.Forms;
 using System.Net;
 using System.IO;
+using System.Threading;
 namespace Youtube_picture_downloader
 {
     public partial class Form1 : Form
@@ -82,7 +82,7 @@ namespace Youtube_picture_downloader
 
         private bool IsValidYtURL(string url)
         {
-            return url.StartsWith("https://www.youtube.com/watch?v=") && GetVideoID(url).Length == 11;
+            return url.StartsWith("https://www.youtube.com/watch?v=");
         }
 
         private void textBox1_MouseEnter(object sender, EventArgs e)
