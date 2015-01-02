@@ -7,6 +7,10 @@ using System.Net;
 using System.IO;
 namespace Youtube_picture_downloader
 {
+    //image = dlClient.DownloadData("http://i.ytimg.com/vi/" + vidId + "/maxresdefault.jpg");
+    //ytUrl = "http://i.ytimg.com/vi/" + vidId + "/maxresdefault.jpg";
+    //image = dlClient.DownloadData("http://i.ytimg.com/vi/" + vidId + "/hqdefault.jpg");
+    //ytUrl = "http://i.ytimg.com/vi/" + vidId + "/hqdefault.jpg";
     public partial class Form1 : Form
     {
         public Form1()
@@ -18,22 +22,33 @@ namespace Youtube_picture_downloader
         {
             /* Download THE BYTES (don't store a local file) of the picture */
             WebClient dlClient = new WebClient();
-            byte[] image;
-            string ytUrl;
+            byte[] image = null;
+            string ytUrl = "";
             string vidId = GetVideoID(textBox1.Text);
 
             lblStatus.Text = "Getting preview..."; Refresh();
-            try
+            HttpWebResponse response = null;
+            HttpWebRequest[] requests = new HttpWebRequest[2] {(HttpWebRequest)WebRequest.Create("http://i.ytimg.com/vi/" + vidId + "/maxresdefault.jpg"),
+                                                              (HttpWebRequest)WebRequest.Create("http://i.ytimg.com/vi/" + vidId + "/hqdefault.jpg")};
+            foreach (HttpWebRequest request in requests)
             {
-                image = dlClient.DownloadData("http://i.ytimg.com/vi/" + vidId + "/maxresdefault.jpg");
-                ytUrl = "http://i.ytimg.com/vi/" + vidId + "/maxresdefault.jpg";
-            }
-            catch (WebException webE)
-            {
-                image = dlClient.DownloadData("http://i.ytimg.com/vi/" + vidId + "/hqdefault.jpg");
-                ytUrl = "http://i.ytimg.com/vi/" + vidId + "/hqdefault.jpg";
-            }
+                try
+                {
+                    response = (HttpWebResponse)request.GetResponse();
 
+                    image = dlClient.DownloadData(request.RequestUri);
+                    ytUrl = request.RequestUri.AbsoluteUri;
+                }
+                catch (WebException ex)
+                { /* Do nothing and continue to the next request */ }
+                finally
+                {
+                    if (response != null)
+                    {
+                        response.Close();
+                    }
+                }
+            }
             MemoryStream mem = new MemoryStream(image);
             Image preview = Image.FromStream(mem);
 
@@ -65,13 +80,13 @@ namespace Youtube_picture_downloader
 
         private string GetVideoID(string url)
         {
-            return url.Substring(url.IndexOf("=") + 1);
+            return url.Substring(url.IndexOf("=") + 1, 11);
         }
 
         private bool IsValidYtURL(string url)
         {
             /* I might not need the OR "http" since I think all YT links are now https */
-            return url.StartsWith("https://www.youtube.com/watch?v=");
+            return url.StartsWith("https://www.youtube.com/watch?v=") && GetVideoID(url).Length == 11;
         }
 
         private void textBox1_MouseEnter(object sender, EventArgs e)
