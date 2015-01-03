@@ -24,7 +24,7 @@ namespace Youtube_picture_downloader
 
             lblStatus.Text = "Getting preview..."; Refresh();
             HttpWebResponse response = null;
-            HttpWebRequest[] requests = new HttpWebRequest[2] {(HttpWebRequest)WebRequest.Create("http://i.ytimg.com/vi/" + vidId + "/maxresdefault.jpg"),
+            HttpWebRequest[] requests = new HttpWebRequest[] {(HttpWebRequest)WebRequest.Create("http://i.ytimg.com/vi/" + vidId + "/maxresdefault.jpg"),
                                                               (HttpWebRequest)WebRequest.Create("http://i.ytimg.com/vi/" + vidId + "/hqdefault.jpg")};
             foreach (HttpWebRequest request in requests)
             {
@@ -70,8 +70,17 @@ namespace Youtube_picture_downloader
 
                         MessageBox.Show("Done!", "Yay", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         lblStatus.Text = "Done!";
+
+                        textBox1.Text = "";
+                        pictureBox1.Image = null;
+                        lblSize.Text = null;
                     }
                 }
+            }
+            else
+            {
+                pictureBox1.Image = null;
+                lblSize.Text = "";
             }
         }
 
